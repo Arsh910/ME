@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 ]
 
+
+CSRF_TRUSTED_ORIGINS = ['example.com']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
