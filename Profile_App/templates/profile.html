@@ -1,0 +1,97 @@
+{%extends 'Base.html'%}
+{%block title%} Profile Page {%endblock%}
+
+{%block head %}
+<style>
+
+</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+{%endblock%}
+
+{%block body%}
+<br><br>
+
+<div class="p-16">
+  <div class="p-8 bg-white shadow mt-24">  
+    <div class="grid grid-cols-1 md:grid-cols-3">  
+        <div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">     
+           <div>       
+             <p class="font-bold text-gray-700 text-xl">--</p>        
+             <p class="text-gray-400">Followers</p>      
+            </div>      
+          <div>           
+            <p class="font-bold text-gray-700 text-xl">{{total}}</p>      
+              <p class="text-gray-400">Uploads</p>     
+          </div>          
+          <div>           
+            <p class="font-bold text-gray-700 text-xl">--</p>        
+            <p class="text-gray-400">Following</p>      
+          </div>    
+        </div>    
+        <div class="relative">      
+          <div class="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
+            {%for data in da%}
+            <img class="w-44 h-44 mx-auto rounded-full shadow-2xl" src="/{{data.image}}" alt="" />
+            {%endfor%}
+          </div>    
+        </div>    
+        <div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">   
+          <button  class="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"> 
+            {%for data in da%}
+            {% if request.user == data.user %}
+             <a href="/{{user.id}}/{{user.username}}/edit_prof/">edit profile</a>
+            {%endif%}
+            {%endfor%}
+          </button> 
+          <button  class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5" title="under work">  
+            follow
+          </button>   
+        </div>  
+      </div> 
+
+      <div class="mt-20 text-center border-b pb-12">    
+        <h1 class="text-4xl font-medium text-gray-700">
+          {%for data in da%}
+            {{data.name}}
+          {%endfor%}
+        </h1>    
+        <p class="font-light text-gray-600 mt-3">
+          {%for data in da%}
+            {{data.bio}}
+          {%endfor%}
+        </p>       
+        <p class="mt-2 text-gray-500">HELLLO</p>  
+      </div>  
+
+    <br>
+    <div class="category-name">Ist year</div> 
+   
+    <div class="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-3 lg:mt-20   ">
+      {%for d in d%}
+      
+      <a href="/{{d.file}}" 
+      class="transition-all  duration-1000 bg-white hover:bg-blue-500  hover:shadow-xl m-2 p-4 relative z-40 group  ">
+      <div
+          class=" absolute  bg-blue-500/50 top-0 left-0 w-20 h-1 z-30  transition-all duration-200   group-hover:bg-white group-hover:w-1/2  ">
+      </div>
+      <div class="py-2 px-9 relative">
+          <img src="https://cdn-icons-png.flaticon.com/128/889/889648.png" alt="noto" width="20%">
+          <h3 class="mt-8 text-lg font-semibold text-black group-hover:text-white ">{{d.title}}</h3>
+          <p class="mt-4 text-base text-gray-600 group-hover:text-white">{{d.name}}</p>
+          <p class="mt-4 text-base text-gray-600 group-hover:text-white">{{d.dis}}</p>
+          <div style="font-size: small; color: gray;">uploaded on {{d.da_ti}}</div>
+          <br>
+          <br>
+          <!-- {%for data in da%}
+          {% if request.user == data.user %}
+              <form action="/delete1/{{d.author.username}}/{{d.id}}/" style="cursor:pointer;"><button type="submit" style="cursor:pointer;  background-color: red;padding: 5px; border-radius: 5px;">delete</button></form>
+          {%endif%}
+          {%endfor%} -->
+
+      </div>
+      </a>
+      
+      {%endfor%}    
+    </div>
+
+  {%endblock%}
