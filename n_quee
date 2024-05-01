@@ -1,0 +1,253 @@
+#include<iostream>
+#include<vector>
+#include <cmath>
+
+using namespace std;
+
+struct cell{
+	int x;
+	int y;
+};
+
+
+//check weather queen can be placed or not 
+
+bool check(vector<cell> &ce , int rows , int colm){
+	int n = ce.size();
+	bool flag = true;
+	for(int i=0;i<n;i++){
+		
+		if(ce[i].x == rows){
+			flag = false;
+		}
+		if(ce[i].y == colm){
+			flag = false;
+		}
+		if(abs(ce[i].x-rows) == abs(ce[i].y-colm)){
+			flag = false;
+		}
+		
+	}
+	return flag;
+}
+
+//showing the board 
+void show(vector<vector<cell> > &board , vector<cell> &sol){
+	int n = board.size();
+	for(int i=0 ; i<n ; i++){
+		for(int j=0 ; j<n ; j++){
+			if(board[i][j].x == sol[j].x && board[i][j].y == sol[j].y ){
+			cout<<" | "<<board[i][j].x<<","<<board[i][j].y<<" Q"<<" | "; 
+			}
+			else{
+			cout<<" | "<<board[i][j].x<<","<<board[i][j].y<<" -"<<" | ";	
+			}
+		}
+		cout<<"\n\n";
+	}
+}
+
+//makes the board of size n 
+vector<vector<cell> > make_board(int n){
+	vector<vector<cell> > board;
+	board.resize(n,vector<cell>(n));
+	for(int i=0 ; i<n ; i++){
+		for(int j=0 ; j<n ; j++){
+			board[i][j].x = i;
+			board[i][j].y = j;
+		}
+	}
+	return board;
+}
+
+//make a vector fro solution
+vector<cell> make_sol(int n){
+	vector<cell>sol;
+	return sol;
+}
+
+//to show solution
+void show_sol(vector<cell> &sol){
+	int n= sol.size();
+	for(int i=0;i<n;i++){
+		cout<<" |"<<sol[i].x<<","<<sol[i].y<<"| "; 
+	}
+}
+
+
+//n_queen function
+
+void n_queen(int n){
+	
+	if(n>=4 && n<=25){
+		
+	vector<vector<cell> > board = make_board(n);
+	vector<cell> sol = make_sol(n);
+	
+	bool flag = true;
+	for(int j =0 ; j<n;j++){
+		for(int i=0;i<n;i++){
+			
+			//check if you can place in the cell			
+			if(check(sol,i,j)){
+				sol.push_back(board[i][j]);
+				flag = false;
+				break;
+				
+			}
+			// if you cannot ,keep the flag true inoder to make the while work which focus on backtracking			
+			else{
+				flag = true;
+			}
+		}
+		while(flag){
+			// go to the last cell 				
+			cell k = sol.back();
+			sol.pop_back();
+			
+			//check if we can choose in last colum or we go further back 
+			if(k.x+1<n){
+			//check if can place the found cell in previous columns
+				if(check(sol,k.x+1,k.y)){
+			//put it into the solution					
+					sol.push_back(board[k.x+1][k.y]);
+			//to stop the loop
+					flag = false;
+			//as we have gone back , we need to check the colum again from the new , we made j this so we chcek again .
+					j=sol.size()-1;
+				}
+			}
+		}
+	}
+	show_sol(sol);
+	}
+	
+	else if(n>25){
+		cout<<"too big for backtracking";
+	}
+	
+	else if(n<4){
+		cout<<"not possible with board of size "<<n;
+	}
+	
+}
+
+
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Function to find the maximum sum
+// path in the grid
+int MaximumPath(vector<vector<int> >& grid)
+{
+    // Dimensions of grid[][]
+    int N = grid.size();
+    int M = grid[0].size();
+ 
+    // Stores maximum sum at each cell
+    // sum[i][j] from cell sum[0][0]
+    vector<vector<int> > sum;
+    sum.resize(N + 1,
+               vector<int>(M + 1));
+ 
+    // Iterate to compute the maximum
+    // sum path in the grid
+    for (int i = 1; i <= N; i++) {
+ 
+        for (int j = 1; j <= M; j++) {
+ 
+            // Update the maximum path sum
+            sum[i][j] = max(sum[i - 1][j],
+                            sum[i][j - 1])
+                        + grid[i - 1][j - 1];
+        }
+    }
+ 
+    // Return the maximum sum
+    return sum[N][M];
+}
+ 
+// Driver Code
+int main()
+{
+    vector<vector<int> > grid
+        = { { 1, 2 }, { 3, 5 } };
+ 
+    cout << MaximumPath(grid);
+ 
+    return 0;
+}
+
+int main(){	n_queen(22);
+}
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+ 
+bool flag = 0;
+void PrintSubsetSum(int i, int n, int set[], int targetSum,
+                    vector<int>& subset)
+{
+    if (targetSum == 0) {
+ 
+        flag = 1;
+        cout << "[ ";
+        for (int i = 0; i < subset.size(); i++) {
+            cout << subset[i] << " ";
+        }
+        cout << "]";
+        return;
+    }
+ 
+    if (i == n) {
+        return;
+    }
+ 
+    PrintSubsetSum(i + 1, n, set, targetSum, subset);
+ 
+    if (set[i] <= targetSum) {
+ 
+        // push the current element in subset
+        subset.push_back(set[i]);
+ 
+        // Recursive call for consider current element
+        PrintSubsetSum(i + 1, n, set, targetSum - set[i],
+                       subset);
+ 
+        // pop-back element after recursive call to restore
+        // subsets original configuration
+        subset.pop_back();
+    }
+}
+ 
+// Driver code
+int main()
+{
+    // Test case 1
+    int set[] = { 1, 2, 1 };
+    int sum = 3;
+    int n = sizeof(set) / sizeof(set[0]);
+    vector<int> subset;
+    cout << "Output 1:" << endl;
+    PrintSubsetSum(0, n, set, sum, subset);
+    cout << endl;
+    flag = 0;
+    // Test case 2
+    int set2[] = { 3, 34, 4, 12, 5, 2 };
+    int sum2 = 30;
+    int n2 = sizeof(set) / sizeof(set[0]);
+    vector<int> subset2;
+    cout << "Output 2:" << endl;
+    PrintSubsetSum(0, n2, set2, sum2, subset2);
+    if (!flag) {
+        cout << "There is no such subset";
+    }
+ 
+    return 0;
+}
